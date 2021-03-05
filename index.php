@@ -14,6 +14,7 @@ try {
     echo $exception->getMessage();
 }
 
+echo "Les élèves et leurs informations";
 //lié entre eleve et eleve_information
 $request = $bdd->prepare("
         SELECT el.prenom, el.nom, el.login, el.password, info.rue, info.cp, info.ville, info.pays
@@ -23,22 +24,24 @@ $request = $bdd->prepare("
 
 $request->execute();
 
-//lié entre eleve_competence et eleve
-$request = $bdd->prepare("
-        SELECT co.niveau, el.prenom, el.nom, el.login, el.password
-        FROM eleve_competence as co
-        INNER JOIN eleve as el ON co.eleve_id = el.id
-");
+echo "<pre>";
+print_r($request->fetchAll());
+echo "</pre>";
 
-$request->execute();
+echo "Les compétences des élèves et leur niveau dans ses compétences";
 
-//lié entre eleve_competence et competence
+//lié entre eleve_competence, eleve et competence
 $request = $bdd->prepare("
-        SELECT elco.niveau, co.titre, co.description
+        SELECT elco.niveau, co.titre, co.description, el.nom, el.nom, el.login, el.password
         FROM eleve_competence as elco
+        INNER JOIN eleve as el ON elco.eleve_id = el.id
         INNER JOIN competence as co ON elco.competence_id = co.id
 ");
 
 $request->execute();
+
+echo "<pre>";
+print_r($request->fetchAll());
+echo "</pre>";
 
 ?>
