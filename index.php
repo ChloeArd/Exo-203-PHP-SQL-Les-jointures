@@ -44,4 +44,6 @@ echo "<pre>";
 print_r($request->fetchAll());
 echo "</pre>";
 
+
+include "script.js";
 ?>
